@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>音声再生</title>
+<style>
+    body {
+        font-family: system-ui;
+        margin: 30px;
+        text-align: center;
+    }
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        gap: 50px;
+        flex-wrap: wrap;
+    }
+    .player-area, .upload-area {
+        text-align: center;
+    }
+    button {
+        width: 150px;
+        padding: 8px;
+        margin: 3px;
+        font-size: 14px;
+        border: none;
+        border-radius: 8px;
+        background-color: #4CAF50;
+        color: white;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #45a049;
+    }
+    .stop {
+        background-color: #d9534f;
+    }
+    .stop:hover {
+        background-color: #c9302c;
+    }
+    .fileInput {
+        margin: 10px;
+        font-size: 14px;
+    }
+    .uploaded-list {
+        margin-top: 10px;
+        text-align: left;
+        display: inline-block;
+        width: 300px;
+    }
+    .file-item {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 5px 0;
+    }
+    .file-name {
+        display: inline-block;
+        width: 180px; /* 曲名部分の幅を固定 */
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    .file-buttons {
+        display: flex;
+        gap: 5px;
+        flex-shrink: 0; /* ボタン幅固定 */
+    }
+    .file-buttons button {
+        width: 60px;
+        font-size: 12px;
+        padding: 4px;
+        margin: 0;
+    }
+</style>
+</head>
+
+<body>
+
+
+
+
+
+
+    
+
+<div class="container">
+    <!-- 音声再生エリア -->
+    <div class="player-area">
+        <button onclick="playSound('music/b.mp3')">Christmas</button><br>
+        <button onclick="playSound('music/c.m4a')">Christmas</button><br>
+        <button onclick="playSound('music/d.mp3')">Christmas</button><br>
+        <button onclick="playSound('music/d.m4a')">Christmas</button><br>
+ <button onclick="playSound('music/e.mp3')">再生まで7秒</button><br>
+      <br>
+        <audio id="player" controls></audio>
+    </div>
+
+   
+
+<script>
+const player = document.getElementById('player');
+const fileInput = document.getElementById('fileInput');
+const uploadedList = document.getElementById('uploadedList');
+
+// IndexedDB 初期化
+let db;
+const request = indexedDB.open('musicDB', 1);
+
+request.onupgradeneeded = function(event) {
+    db = event.target.result;
+    if(!db.objectStoreNames.contains('files')) {
+        db.createObjectStore('files', { keyPath: 'id', autoIncrement: true });
+    }
+};
+
+request.onsuccess = function(event) {
+    db = event.target.result;
+    loadFiles();
+};
+
+request.onerror = function(event) {
+    console.error("IndexedDB エラー:", event);
+};
+
+// 再生
+function playSound(filename) {
+    player.src = filename;
+    player.play();
+}
+
+
+</script>
+
+</body>
+</html>
